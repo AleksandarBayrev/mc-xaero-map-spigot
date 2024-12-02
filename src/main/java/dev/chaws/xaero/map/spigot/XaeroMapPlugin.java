@@ -1,6 +1,14 @@
 package dev.chaws.xaero.map.spigot;
 
-import com.google.common.io.ByteStreams;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.util.Objects;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.bstats.bukkit.Metrics;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,13 +17,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerRegisterChannelEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.util.Objects;
-import java.util.Random;
-import java.util.logging.Logger;
+import com.google.common.io.ByteStreams;
 
 public class XaeroMapPlugin extends JavaPlugin implements Listener {
 	private static final String worldmapChannel = "xaeroworldmap:main";
@@ -33,13 +35,15 @@ public class XaeroMapPlugin extends JavaPlugin implements Listener {
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, worldmapChannel);
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, minimapChannel);
 		this.getServer().getPluginManager().registerEvents(this, this);
-
+		log.log(Level.INFO, "Started Xaero Map Plugin");
 		try {
 			new Metrics(this, 16554);
 		} catch (Throwable ignored) { }
 	}
 
+	@Override
 	public void onDisable() {
+		log.log(Level.INFO, "Stopped Xaero Map Plugin");
 		this.getServer().getMessenger().unregisterOutgoingPluginChannel(this);
 	}
 
